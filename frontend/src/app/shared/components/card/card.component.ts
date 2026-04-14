@@ -98,8 +98,8 @@ export class ZardCardComponent {
     return this.zDescription() && baseId ? `${baseId}-description` : null;
   });
 
-  protected readonly classes = computed(() => mergeClasses(cardVariants(), this.class()));
-  protected readonly bodyClasses = computed(() => mergeClasses(cardBodyVariants()));
+  protected readonly classes = computed(() => mergeClasses(cardVariants(), 'flex flex-col h-full min-h-0', this.class()));
+  protected readonly bodyClasses = computed(() => mergeClasses(cardBodyVariants(),'flex-1 min-h-0 flex'));
   protected readonly footerClasses = computed(() =>
     mergeClasses(cardFooterVariants(), this.zFooterBorder() ? 'border-t' : ''),
   );

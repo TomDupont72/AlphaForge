@@ -9,9 +9,6 @@
       >
         <nav [class]="'flex h-full flex-col overflow-hidden ' + (sidebarCollapsed() ? 'gap-1 p-1 pt-4' : 'gap-4 p-4')">
           <z-sidebar-group>
-            @if (!sidebarCollapsed()) {
-              <z-sidebar-group-label>Main</z-sidebar-group-label>
-            }
             @for (item of mainMenuItems; track item.label) {
               <button
                 type="button"
@@ -26,55 +23,6 @@
                   <span>{{ item.label }}</span>
                 }
               </button>
-            }
-          </z-sidebar-group>
- 
-          <z-sidebar-group>
-            @if (!sidebarCollapsed()) {
-              <z-sidebar-group-label>Workspace</z-sidebar-group-label>
-            }
-            @for (item of workspaceMenuItems; track item.label) {
-              @if (item.submenu) {
-                <button
-                  type="button"
-                  z-button
-                  zType="ghost"
-                  z-menu
-                  [zMenuTriggerFor]="submenu"
-                  zPlacement="rightTop"
-                  [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-                  [zTooltip]="sidebarCollapsed() ? item.label : null"
-                  zPosition="right"
-                >
-                  <ng-icon [name]="item.icon" [class]="sidebarCollapsed() ? '' : 'mr-2'" />
-                  @if (!sidebarCollapsed()) {
-                    <span class="flex-1 text-left">{{ item.label }}</span>
-                    <ng-icon name="lucideChevronRight" />
-                  }
-                </button>
- 
-                <ng-template #submenu>
-                  <div z-menu-content class="w-48">
-                    @for (subitem of item.submenu; track subitem.label) {
-                      <button type="button" z-menu-item>{{ subitem.label }}</button>
-                    }
-                  </div>
-                </ng-template>
-              } @else {
-                <button
-                  type="button"
-                  z-button
-                  zType="ghost"
-                  [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-                  [zTooltip]="sidebarCollapsed() ? item.label : ''"
-                  zPosition="right"
-                >
-                  <ng-icon [name]="item.icon" [class]="sidebarCollapsed() ? '' : 'mr-2'" />
-                  @if (!sidebarCollapsed()) {
-                    <span>{{ item.label }}</span>
-                  }
-                </button>
-              }
             }
           </z-sidebar-group>
  
@@ -121,7 +69,111 @@
         </nav>
       </z-sidebar>
  
-      <z-content>
-        
+      <z-content class="h-full min-h-0">
+        <div class="grid h-full min-h-0 grid-cols-3 grid-rows-[2fr_5fr_3fr] gap-4">
+
+          <ng-template #titlePnl>
+            <h1 class="font-bold text-xl">PnL</h1>
+          </ng-template>
+
+          <z-card [zTitle]="titlePnl" class="min-h-0 h-auto" >
+            <div class="w-full flex flex-col items-center justify-center h-full">
+              <div class="flex flex-row gap-2">
+                <z-badge [zStatus]="'Positive'" class="rounded-full h-full"><ng-icon name="lucideChevronUp" size="40"/></z-badge>
+                <h1 class="font-bold text-4xl text-green-600">{{ 1250 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}} (+{{ 0.084 | percent:'1.1-1'}})</h1>
+              </div>
+              <h1 class="text-xl font-semibold">
+                <span class="text-green-600">+{{ 120 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}}</span>
+                <span class="text-muted-foreground"> aujourd'hui</span>
+              </h1>
+            </div>
+          </z-card>
+
+          <ng-template #titlePortfolio>
+            <h1 class="font-bold text-xl">Valeur du portefeuille</h1>
+          </ng-template>
+
+          <z-card [zTitle]="titlePortfolio" class="min-h-0 gap-2">
+            <div class="w-full flex flex-col items-center justify-center h-full">
+              <h1 class="font-bold text-4xl text-center">{{ 14500 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}}</h1>
+            </div>
+          </z-card>
+
+          <ng-template #titleCash>
+            <h1 class="font-bold text-xl">Liquidités</h1>
+          </ng-template>
+
+          <z-card [zTitle]="titleCash" class="min-h-0 gap-2">
+            <div class="w-full flex flex-col items-center justify-center h-full">
+              <h1 class="font-bold text-4xl text-center">{{ 2400 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}}</h1>
+            </div>
+          </z-card>
+
+          <z-card class="col-span-3 min-h-0">
+            <app-line-chart></app-line-chart>
+          </z-card>
+
+          <div class="grid col-span-3 grid-cols-2 gap-4 min-h-0">
+            <div class="overflow-y-auto rounded-lg border bg-card">
+            <table z-table>
+              <thead z-table-header class="bg-accent sticky top-0 z-10 backdrop-blur">
+                
+                <tr zard-table-row>
+                  <th z-table-head >Actif</th>
+                  <th z-table-head>Quantité</th>
+                  <th z-table-head>Prix moyen</th>
+                  <th z-table-head>Prix actuel</th>
+                  <th z-table-head>Valeur</th>
+                  <th z-table-head>PnL</th>
+                  <th z-table-head>Performance</th>
+                </tr>
+              </thead>
+              <tbody z-table-body>
+                @for (position of positions; track position.id) {
+                  <tr z-table-row>
+                    <td z-table-cell class="font-semibold">{{ position.actif }}</td>
+                    <td z-table-cell class="font-semibold">{{ position.quantite | number }}</td>
+                    <td z-table-cell class="font-semibold">{{ position.prix_moyen | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</td>
+                    <td z-table-cell class="font-semibold">{{ position.prix_actuel | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</td>
+                    <td z-table-cell class="font-semibold">{{ position.valeur | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</td>
+                    <td z-table-cell class="font-semibold"><z-badge [zStatus]="position.pnl < 0 ? 'Negative' : 'Positive'">{{ position.pnl > 0 ? '+' : '' }}{{ position.pnl | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</z-badge></td>
+                    <td z-table-cell class="font-semibold">{{ position.performance | percent:'1.1-1' }}</td>
+                  </tr>}
+              </tbody>
+            </table>
+            </div>
+            
+            <div class="overflow-y-auto rounded-lg border bg-card">
+            <table z-table>
+              <thead z-table-header class="bg-accent sticky top-0 z-10 backdrop-blur">
+                
+                <tr zard-table-row>
+                  <th z-table-head>Type</th>
+                  <th z-table-head>Actif</th>
+                  <th z-table-head>Quantité</th>
+                  <th z-table-head>Prix</th>
+                  <th z-table-head>Date</th>
+                </tr>
+              </thead>
+              <tbody z-table-body>
+                @for (activite of activites; track activite.id) {
+                  <tr z-table-row>
+                    <td z-table-cell><z-badge [zStatus]="activite.type">{{ activite.type }}</z-badge></td>
+                    <td z-table-cell class="font-semibold">{{ activite.actif }}</td>
+                    <td z-table-cell class="font-semibold">{{ activite.quantite | number }}</td>
+                    <td z-table-cell class="font-semibold">{{ activite.prix | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</td>
+                    <td z-table-cell class="font-semibold">{{ activite.date | date:'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>}
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+        </div>
       </z-content>
     </z-layout>
+
+
+
+
+

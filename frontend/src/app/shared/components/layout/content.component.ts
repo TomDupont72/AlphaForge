@@ -8,7 +8,7 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
 @Component({
   selector: 'z-content',
   template: `
-    <main>
+    <main class="h-full flex flex-col">
       <ng-content />
     </main>
   `,
