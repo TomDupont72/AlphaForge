@@ -1,0 +1,20 @@
+<main class="min-h-screen flex flex-col justify-center items-center gap-4">
+    <z-card [zTitle]="'Connexion'" class="h-auto min-w-80 gap-6">
+        <form (submitted)="auth.signIn($event)" class="flex flex-col gap-6 w-full">
+            <z-form-field>
+                <label z-form-label zRequired for="email">Email</label>
+                <z-form-control>
+                    <input z-input id="email" type="email"/>
+                </z-form-control>
+            </z-form-field>
+            <z-form-field>
+                <label z-form-label zRequired for="password">Mot de passe</label>
+                <z-form-control>
+                    <input z-input id="password" type="password" autocomplete="off"/>
+                </z-form-control>
+            </z-form-field>
+            <button z-button zType="default" type="submit">Se connecter</button>
+        </form>
+    </z-card>
+    <h1 class="font-semibold text-muted-foreground">Pas encore de compte ? <button z-button zType="link">S'inscrire</button></h1>
+</main>

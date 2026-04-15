@@ -1,4 +1,6 @@
 @layer ng-icon, theme, base, components, utilities;
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/outfit";
 @import 'tailwindcss';
 @plugin "tailwindcss-animate";
 
@@ -6,6 +8,7 @@
 
 
 :root {
+  font-family: "Outfit Variable", "Inter Variable", system-ui, Avenir, Helvetica, Arial, sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

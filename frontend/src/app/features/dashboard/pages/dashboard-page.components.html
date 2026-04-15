@@ -161,7 +161,7 @@
                     <td z-table-cell><z-badge [zStatus]="activite.type">{{ activite.type }}</z-badge></td>
                     <td z-table-cell class="font-semibold">{{ activite.actif }}</td>
                     <td z-table-cell class="font-semibold">{{ activite.quantite | number }}</td>
-                    <td z-table-cell class="font-semibold">{{ activite.prix | currency:'EUR':'symbol':'1.0-2':'fr-FR' }}</td>
+                    <td z-table-cell class="font-semibold">{{ activite.prix | currency:'$':'symbol':'1.0-2':'fr-FR' }}</td>
                     <td z-table-cell class="font-semibold">{{ activite.date | date:'dd/MM/yyyy HH:mm' }}</td>
                   </tr>}
               </tbody>
