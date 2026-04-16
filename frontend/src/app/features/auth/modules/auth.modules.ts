@@ -34,19 +34,23 @@ export function passwordMatchValidator(): ValidatorFn {
   };
 }
 
-const signInForm = new FormGroup({
-  email: emailControl(),
-  password: passwordControl(),
-});
-
-const registerForm = new FormGroup(
-  {
+export function signInForm(){
+  return new FormGroup({
     email: emailControl(),
     password: passwordControl(),
-    username: usernameControl(),
-    passwordConfirm: passwordControl(),
-  },
-  {
-    validators: [passwordMatchValidator()],
-  }
-);
+  });
+}
+
+export function registerForm() {
+  return new FormGroup(
+    {
+      email: emailControl(),
+      password: passwordControl(),
+      username: usernameControl(),
+      passwordConfirm: passwordControl(),
+    },
+    {
+      validators: [passwordMatchValidator()],
+    }
+  );
+}

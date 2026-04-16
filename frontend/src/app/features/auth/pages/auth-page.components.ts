@@ -1,22 +1,17 @@
-import { ZardButtonComponent } from '@/shared/components/button';
-import { ZardCardComponent } from '@/shared/components/card';
-import { ZardFormControlComponent, ZardFormFieldComponent, ZardFormLabelComponent } from '@/shared/components/form';
-import { ZardInputDirective } from '@/shared/components/input';
 import { Component, inject } from '@angular/core';
 import { AuthFacade } from '@/features/auth/hooks/auth.facade';
+import { SignIn } from '../components/sign-in.components';
+import { Register } from '../components/register.components';
+import { AuthApi } from '../api/auth.api';
 
 @Component({
     selector: 'auth',
     standalone: true,
     imports: [
-        ZardCardComponent,
-        ZardFormFieldComponent,
-        ZardFormControlComponent,
-        ZardFormLabelComponent,
-        ZardInputDirective,
-        ZardButtonComponent
+        SignIn,
+        Register
     ],
-    providers: [AuthFacade],
+    providers: [AuthFacade, AuthApi],
     templateUrl: './auth-page.components.html'
 })
 export class Auth {

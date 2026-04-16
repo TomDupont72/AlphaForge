@@ -6,11 +6,15 @@ import { SignInRequest, RegisterRequest } from "@/features/auth/models/auth.mode
 @Injectable()
 export class AuthFacade {
     readonly authApi = inject(AuthApi);
-    private router = inject(Router);
+    readonly router = inject(Router);
 
-    readonly mode = signal<string>('signIn');
+    readonly mode = signal<'signIn' | 'register'>('signIn');
     readonly loading = signal<boolean>(false);
     readonly error = signal<string | null>(null);
+
+    setMode(mode: 'signIn' | 'register') {
+        this.mode.set(mode)
+    }
 
     async signIn(payload: SignInRequest): Promise<void> {
         this.loading.set(true);
