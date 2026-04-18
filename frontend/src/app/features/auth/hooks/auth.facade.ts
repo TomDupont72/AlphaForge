@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from "@angular/core";
 import { AuthApi } from "@/features/auth/api/auth.api";
 import { Router } from "@angular/router";
 import { SignInRequest, RegisterRequest, AppSession } from "@/features/auth/models/auth.models";
+import { authClient } from "@/../lib/auth-client";
 
 @Injectable()
 export class AuthFacade {
@@ -72,5 +73,28 @@ export class AuthFacade {
         } finally {
         this.loading.set(false);
         }
+    };
+
+    async initSession(): Promise<void> {
+        this.loading.set(true)
+        const session = await authClient.getSession()
+
+        if (session?.data) {
+            localStorage.setItem(
+                "session",
+                JSON.stringify({
+                    user: {
+                        email: session.data.user.email,
+                        name: session.data.user.name,
+                        id: session.data.user.id
+                    },
+                    createdAt: session.data.session.createdAt
+                } as AppSession)
+            );
+
+            this.router.navigate(['/dashboard']);
+        }
+
+        this.loading.set(false)
     }
 }

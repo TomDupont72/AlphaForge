@@ -81,6 +81,7 @@ interface MenuItem {
 })
 export class Dashboard {
   readonly sidebarCollapsed = signal(true);
+  readonly session = JSON.parse(localStorage.getItem("session") || "null");
  
   mainMenuItems: MenuItem[] = [
     { icon: 'lucideLayoutDashboard', label: 'Tableau de bord' },

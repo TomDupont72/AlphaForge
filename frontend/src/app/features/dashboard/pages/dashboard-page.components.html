@@ -40,8 +40,8 @@
  
               @if (!sidebarCollapsed()) {
                 <div>
-                  <span class="font-medium">zardui</span>
-                  <div class="text-xs">test&#64;zardui.com</div>
+                  <span class="font-medium">{{ session.user.name }}</span>
+                  <div class="text-xs">{{ session.user.email }}</div>
                 </div>
  
                 <ng-icon name="lucideChevronsUpDown" class="ml-auto" />
