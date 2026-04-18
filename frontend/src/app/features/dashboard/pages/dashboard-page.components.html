@@ -52,16 +52,16 @@
               <div z-menu-content class="w-48">
                 <button type="button" z-menu-item>
                   <ng-icon name="lucideUser" class="mr-2" />
-                  Profile
+                  Profil
                 </button>
                 <button type="button" z-menu-item>
                   <ng-icon name="lucideSettings" class="mr-2" />
-                  Settings
+                  Paramètres
                 </button>
                 <z-divider zSpacing="sm" />
-                <button type="button" z-menu-item>
+                <button type="button" z-menu-item (click)="dashboard.logOut()">
                   <ng-icon name="lucideLogOut" class="mr-2" />
-                  Logout
+                  Se déconnecter
                 </button>
               </div>
             </ng-template>
@@ -95,7 +95,7 @@
 
           <z-card [zTitle]="titlePortfolio" class="min-h-0 gap-2">
             <div class="w-full flex flex-col items-center justify-center h-full">
-              <h1 class="font-bold text-4xl text-center">{{ 14500 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}}</h1>
+              <h1 class="font-bold text-4xl text-center">{{ account()?.accrued_fees ?? 0 | currency:'$':'symbol':'1.0-2':'fr-FR'}}</h1>
             </div>
           </z-card>
 
@@ -105,7 +105,7 @@
 
           <z-card [zTitle]="titleCash" class="min-h-0 gap-2">
             <div class="w-full flex flex-col items-center justify-center h-full">
-              <h1 class="font-bold text-4xl text-center">{{ 2400 | currency:'EUR':'symbol':'1.0-2':'fr-FR'}}</h1>
+              <h1 class="font-bold text-4xl text-center">{{ account()?.cash ?? 0 | currency:'$':'symbol':'1.0-2':'fr-FR'}}</h1>
             </div>
           </z-card>
 
@@ -162,7 +162,10 @@
                     <td z-table-cell class="font-semibold">{{ activite.actif }}</td>
                     <td z-table-cell class="font-semibold">{{ activite.quantite | number }}</td>
                     <td z-table-cell class="font-semibold">{{ activite.prix | currency:'$':'symbol':'1.0-2':'fr-FR' }}</td>
-                    <td z-table-cell class="font-semibold">{{ activite.date | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td z-table-cell class="flex flex-col">
+                      <p class="font-semibold">{{ activite.date | date:'dd/MM/yyyy' }}</p>
+                      <p class="font-semibold text-muted-foreground">{{ activite.date | date:'HH:mm' }}</p>
+                    </td>
                   </tr>}
               </tbody>
             </table>

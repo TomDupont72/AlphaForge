@@ -6,6 +6,7 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
+    "@api/testalpacadocs": "file:.api/apis/testalpacadocs",
     "@fastify/cors": "^11.2.0",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",

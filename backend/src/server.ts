@@ -2,6 +2,7 @@ import "dotenv/config"
 import Fastify from "fastify"
 import fastifyCors from "@fastify/cors"
 import { authRoutes } from "./routes/auth.js"
+import { alpacaRoutes } from "./routes/alpaca.js"
 
 const app = Fastify({
   logger: true,
@@ -17,6 +18,8 @@ app.get("/health", async () => {
 })
 
 await app.register(authRoutes, { prefix: "/api/auth" });
+
+await app.register(alpacaRoutes, { prefix: "/api/alpaca"})
 
 await app.listen({
   port: Number(process.env.PORT ?? 8000),

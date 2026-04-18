@@ -1,4 +1,4 @@
-import { Component, signal, LOCALE_ID } from '@angular/core';
+import { Component, signal, LOCALE_ID, inject, OnInit } from '@angular/core';
 import { CurrencyPipe, DatePipe, DecimalPipe, PercentPipe } from '@angular/common';
 import { NgIcon, provideIcons, type IconName } from '@ng-icons/core';
 import {
@@ -27,6 +27,9 @@ import { ZardCardComponent } from '@/shared/components/card';
 import { LineChartComponent } from '@/shared/components/line-chart';
 import { ZardTableBodyComponent, ZardTableCellComponent, ZardTableComponent, ZardTableHeadComponent, ZardTableHeaderComponent, ZardTableRowComponent } from '@/shared/components/table';
 import { ZardBadgeComponent } from '@/shared/components/badge';
+import { DashboardFacade } from '@/features/dashboard/hooks/dashboard.facade';
+import { DashboardApi } from '@/features/dashboard/api/dashboard.api';
+import { AlpacaAccount } from '../models/dashboard.models';
  
 interface MenuItem {
   icon: IconName;
@@ -77,12 +80,29 @@ interface MenuItem {
         lucideChevronDown
         }),
     ],
-    providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }]
+    providers: [
+        DashboardFacade,
+        DashboardApi,
+        { provide: LOCALE_ID, useValue: 'fr-FR' }
+    ]
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  readonly dashboard = inject(DashboardFacade);
+
   readonly sidebarCollapsed = signal(true);
   readonly session = JSON.parse(localStorage.getItem("session") || "null");
- 
+  readonly account = signal<AlpacaAccount | null>(null);
+
+  async initAccount(): Promise<void> {
+    const account = await this.dashboard.account;
+    this.account.set(account);
+    console.log(account)
+  }
+
+  ngOnInit(): void {
+        void this.initAccount();
+    }
+
   mainMenuItems: MenuItem[] = [
     { icon: 'lucideLayoutDashboard', label: 'Tableau de bord' },
     { icon: 'lucideWallet', label: 'Portefeuille' },
