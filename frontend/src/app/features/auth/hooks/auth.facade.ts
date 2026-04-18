@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { AuthApi } from "@/features/auth/api/auth.api";
 import { Router } from "@angular/router";
-import { SignInRequest, RegisterRequest } from "@/features/auth/models/auth.models";
+import { SignInRequest, RegisterRequest, AppSession } from "@/features/auth/models/auth.models";
 
 @Injectable()
 export class AuthFacade {
@@ -22,12 +22,25 @@ export class AuthFacade {
 
         try {
         const data = await this.authApi.apiSignIn(payload.email, payload.password);
-        console.log(data)
+        
+        localStorage.setItem(
+            "session",
+            JSON.stringify({
+            user: {
+                email: data.user.email,
+                name: data.user.name,
+                id: data.user.id
+            },
+            createdAt: data.user.createdAt,
+            } as AppSession)
+        );
+        
+        this.router.navigate(['/dashboard']);
     } catch (error) {
         console.error(error)
         this.error.set("Impossible de se connecter.");
         } finally {
-        this.loading.set(false);
+            this.loading.set(false);
         }
     }
 
@@ -37,6 +50,21 @@ export class AuthFacade {
 
         try {
         const data = await this.authApi.apiSignUp(payload.email, payload.password, payload.username);
+
+        localStorage.setItem(
+            "session",
+            JSON.stringify({
+            user: {
+                email: data.user.email,
+                name: data.user.name,
+                id: data.user.id
+            },
+            createdAt: data.user.createdAt,
+            } as AppSession)
+        );
+
+        this.router.navigate(['/dashboard']);
+
         console.log(data)
         } catch (error) {
         console.error(error)

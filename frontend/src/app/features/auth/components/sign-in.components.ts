@@ -2,10 +2,11 @@ import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardCardComponent } from '@/shared/components/card';
 import { ZardFormControlComponent, ZardFormFieldComponent, ZardFormLabelComponent } from '@/shared/components/form';
 import { ZardInputDirective } from '@/shared/components/input';
-import { Component, inject, output } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, inject, output, ViewChild } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { signInForm } from "../modules/auth.modules";
 import { AuthFacade } from '../hooks/auth.facade';
+import { fadeUpAnimation } from '@/shared/animations';
 
 @Component({
     selector: 'sign-in',
@@ -21,7 +22,7 @@ import { AuthFacade } from '../hooks/auth.facade';
     ],
     templateUrl: './sign-in.components.html'
 })
-export class SignIn {
+export class SignIn implements AfterViewInit {
     readonly auth = inject(AuthFacade);
 
     submitted = output<{email: string, password: string }>();
@@ -37,5 +38,11 @@ export class SignIn {
             email: value.email.trim(),
             password: value.password.trim()
         })
+    }
+
+    @ViewChild('fadeUp') fadeUp!: ElementRef<HTMLElement>;
+
+    ngAfterViewInit(): void {
+        fadeUpAnimation(this.fadeUp.nativeElement);
     }
 }

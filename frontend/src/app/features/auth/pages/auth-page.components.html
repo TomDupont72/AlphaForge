@@ -1,7 +1,7 @@
 <main class="min-h-screen flex flex-col justify-center items-center gap-4">
     @if (auth.mode() === 'signIn') {
-        <sign-in/>
+        <sign-in (submitted)="auth.signIn($event)"/>
     } @else {
-        <register/>
+        <register (submitted)="auth.register($event)"/>
     }
 </main>

@@ -13,9 +13,8 @@ export interface AppSession {
     email: string;
     name: string;
   };
-  token?: string;
-  createdAt: string;
-  expiresAt?: string;
+  createdAt: Date;
+  expiresAt?: Date;
 }
 
 export interface SignInRequest {
