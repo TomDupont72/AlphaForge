@@ -22,6 +22,6 @@ await app.register(authRoutes, { prefix: "/api/auth" });
 await app.register(alpacaRoutes, { prefix: "/api/alpaca"})
 
 await app.listen({
-  port: Number(process.env.PORT ?? 8000),
-  host: process.env.HOST ?? "127.0.0.1",
+  port: Number(process.env.PORT ?? 8001),
+  host: process.env.HOST ?? "0.0.0.0",
 })
