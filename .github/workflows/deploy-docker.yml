@@ -61,6 +61,7 @@ jobs:
             cd /var/www/alphaforge
             echo APP_VERSION=${{ env.IMAGE_TAG }} > .env
             docker-compose -f compose.prod.yaml pull
-            docker-compose -f compose.prod.yaml up -d --force-recreate --remove-orphans
+            docker-compose -f compose.prod.yaml down
+            docker-compose -f compose.prod.yaml up -d
             docker image prune -f
           "
