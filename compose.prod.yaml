@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/tomdupont72/alphaforge-backend:1.0.0
+    image: ghcr.io/tomdupont72/alphaforge-backend:latest
     env_file:
       - /etc/alphaforge-api.env
     ports:
@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/tomdupont72/alphaforge-frontend:1.0.0
+    image: ghcr.io/tomdupont72/alphaforge-frontend:latest
     ports:
       - "4200:80"
     restart: unless-stopped
