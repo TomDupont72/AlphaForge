@@ -6,6 +6,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+
+RUN npx prisma generate
 RUN npm run build
 
 FROM node:20-alpine
@@ -16,6 +18,8 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/generated ./src/generated
+COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 8000
 
