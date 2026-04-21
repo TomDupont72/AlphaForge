@@ -14,7 +14,7 @@ import {
   ChartComponent,
   NgApexchartsModule
 } from 'ng-apexcharts';
-import { ZardButtonComponent } from './button';
+import { ZardButtonComponent } from '@/shared/components/button/button.component';
 
 type RangeKey = '1M' | '6M' | '1Y' | 'YTD' | 'ALL';
 

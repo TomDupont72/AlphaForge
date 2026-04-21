@@ -2,71 +2,12 @@
       <z-sidebar
         [zWidth]="250"
         [zCollapsible]="true"
-        [zCollapsed]="sidebarCollapsed()"
+        [zCollapsed]="sidebar.sidebarCollapsed()"
         [zCollapsedWidth]="70"
-        (zCollapsedChange)="onCollapsedChange($event)"
+        (zCollapsedChange)="sidebar.onCollapsedChange($event)"
         class="p-0!"
       >
-        <nav [class]="'flex h-full flex-col overflow-hidden ' + (sidebarCollapsed() ? 'gap-1 p-1 pt-4' : 'gap-4 p-4')">
-          <z-sidebar-group>
-            @for (item of mainMenuItems; track item.label) {
-              <button
-                type="button"
-                z-button
-                zType="ghost"
-                [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-                [zTooltip]="sidebarCollapsed() ? item.label : ''"
-                zPosition="right"
-              >
-                <ng-icon [name]="item.icon" [class]="sidebarCollapsed() ? '' : 'mr-2'" />
-                @if (!sidebarCollapsed()) {
-                  <span>{{ item.label }}</span>
-                }
-              </button>
-            }
-          </z-sidebar-group>
- 
-          <div class="mt-auto">
-            <div
-              z-menu
-              [zMenuTriggerFor]="userMenu"
-              zPlacement="rightBottom"
-              [class]="
-                'hover:bg-accent flex cursor-pointer items-center justify-center gap-2 rounded-md ' +
-                (sidebarCollapsed() ? 'm-2 p-0' : 'p-2')
-              "
-            >
-              <z-avatar zSrc="https://zardui.com/images/avatar/imgs/avatar_image.jpg" zAlt="Zard UI" />
- 
-              @if (!sidebarCollapsed()) {
-                <div>
-                  <span class="font-medium">{{ session.user.name }}</span>
-                  <div class="text-xs">{{ session.user.email }}</div>
-                </div>
- 
-                <ng-icon name="lucideChevronsUpDown" class="ml-auto" />
-              }
-            </div>
- 
-            <ng-template #userMenu>
-              <div z-menu-content class="w-48">
-                <button type="button" z-menu-item>
-                  <ng-icon name="lucideUser" class="mr-2" />
-                  Profil
-                </button>
-                <button type="button" z-menu-item>
-                  <ng-icon name="lucideSettings" class="mr-2" />
-                  Paramètres
-                </button>
-                <z-divider zSpacing="sm" />
-                <button type="button" z-menu-item (click)="dashboard.logOut()">
-                  <ng-icon name="lucideLogOut" class="mr-2" />
-                  Se déconnecter
-                </button>
-              </div>
-            </ng-template>
-          </div>
-        </nav>
+        <sidebar/>
       </z-sidebar>
  
       <z-content class="h-full min-h-0">

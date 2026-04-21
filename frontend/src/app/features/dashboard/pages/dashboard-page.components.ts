@@ -16,38 +16,28 @@ import {
   lucideWallet
 } from '@ng-icons/lucide';
  
-import { ZardAvatarComponent } from '@/shared/components/avatar';
 import { ZardBreadcrumbImports } from '@/shared/components/breadcrumb/breadcrumb.imports';
-import { ZardButtonComponent } from '@/shared/components/button';
-import { ZardDividerComponent } from '@/shared/components/divider';
 import { LayoutImports } from '@/shared/components/layout/layout.imports';
 import { ZardMenuImports } from '@/shared/components/menu/menu.imports';
 import { ZardTooltipImports } from '@/shared/components/tooltip';
 import { ZardCardComponent } from '@/shared/components/card';
-import { LineChartComponent } from '@/shared/components/line-chart';
+import { LineChartComponent } from '@/shared/custom-components/line-chart/line-chart';
 import { ZardTableBodyComponent, ZardTableCellComponent, ZardTableComponent, ZardTableHeadComponent, ZardTableHeaderComponent, ZardTableRowComponent } from '@/shared/components/table';
 import { ZardBadgeComponent } from '@/shared/components/badge';
 import { DashboardFacade } from '@/features/dashboard/hooks/dashboard.facade';
 import { DashboardApi } from '@/features/dashboard/api/dashboard.api';
 import { AlpacaAccount } from '../models/dashboard.models';
- 
-interface MenuItem {
-  icon: IconName;
-  label: string;
-  submenu?: { label: string }[];
-}
+import { Sidebar } from '@/shared/custom-components/sidebar/sidebar';
+import { SidebarFacade } from '@/shared/hooks/sidebar.facade';
 
 @Component({
     selector: 'dashboard',
     standalone: true,
     imports: [
         LayoutImports,
-        ZardButtonComponent,
         ZardBreadcrumbImports,
         ZardMenuImports,
         ZardTooltipImports,
-        ZardDividerComponent,
-        ZardAvatarComponent,
         ZardCardComponent,
         ZardTableComponent,
         ZardTableHeaderComponent,
@@ -61,7 +51,8 @@ interface MenuItem {
         DecimalPipe,
         CurrencyPipe,
         PercentPipe,
-        DatePipe
+        DatePipe,
+        Sidebar
     ],
     templateUrl: './dashboard-page.components.html',
     viewProviders: [
@@ -88,8 +79,8 @@ interface MenuItem {
 })
 export class Dashboard implements OnInit {
   readonly dashboard = inject(DashboardFacade);
+  readonly sidebar = inject(SidebarFacade)
 
-  readonly sidebarCollapsed = signal(true);
   readonly session = JSON.parse(localStorage.getItem("session") || "null");
   readonly account = signal<AlpacaAccount | null>(null);
 
@@ -102,15 +93,6 @@ export class Dashboard implements OnInit {
   ngOnInit(): void {
         void this.initAccount();
     }
-
-  mainMenuItems: MenuItem[] = [
-    { icon: 'lucideLayoutDashboard', label: 'Tableau de bord' },
-    { icon: 'lucideWallet', label: 'Portefeuille' },
-    { icon: 'lucideCpu', label: 'Stratégies' },
-    { icon: 'lucideChartLine', label: 'Détail des stratégies' },
-    { icon: 'lucideChartCandlestick', label: 'Ordres' },
-    { icon: 'lucideCable', label: 'Connexion au broker' }
-  ];
 
 positions = [
     {
@@ -297,12 +279,4 @@ activites = [
         "date": "2026-04-10 09:50"
     }
 ]
-
-  toggleSidebar() {
-    this.sidebarCollapsed.update(collapsed => !collapsed);
-  }
- 
-  onCollapsedChange(collapsed: boolean) {
-    this.sidebarCollapsed.set(collapsed);
-  }
 }

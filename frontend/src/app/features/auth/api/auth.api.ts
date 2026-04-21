@@ -7,7 +7,9 @@ type SignUpPayload = {
   name: string;
 };
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class AuthApi {
     async apiSignIn(email: string, password: string) {
         const { data, error } = await authClient.signIn.email({
@@ -35,4 +37,14 @@ export class AuthApi {
 
         return data;
     };
+
+    async apiLogOut() {
+        const { data, error } = await authClient.signOut();
+
+        if (error) {
+            throw new Error("Failed to sign in");
+        }
+
+        return data;
+    }
 }

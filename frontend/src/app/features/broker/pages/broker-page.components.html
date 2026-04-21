@@ -1,0 +1,24 @@
+<z-layout class="min-h-screen overflow-hidden">
+  <z-sidebar
+    [zWidth]="250"
+    [zCollapsible]="true"
+    [zCollapsed]="sidebar.sidebarCollapsed()"
+    [zCollapsedWidth]="70"
+    (zCollapsedChange)="sidebar.onCollapsedChange($event)"
+    class="p-0!"
+  >
+    <sidebar />
+  </z-sidebar>
+
+  <z-content class="h-screen">
+    <div class="flex h-full w-full items-center justify-center">
+      <z-card class="h-auto">
+        <div class="flex flex-col items-center justify-center gap-4">
+          <h1 class="text-2xl font-semibold">Aucune clés API</h1>
+          <p class="text-muted-foreground">Importer vos clés API pour commencer</p>
+          <button z-button zType="outline" (click)="openDialog()">Ajouter des clés API</button>
+        </div>
+      </z-card>
+    </div>
+  </z-content>
+</z-layout>
