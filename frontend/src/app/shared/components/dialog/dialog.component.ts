@@ -99,7 +99,7 @@ export class ZardDialogOptions<T, U> {
               <ng-icon [svg]="config.zCancelIcon" class="size-4!" />
             }
 
-            {{ config.zCancelText ?? 'Cancel' }}
+            {{ config.zCancelText ?? 'Annuler' }}
           </button>
         }
 
@@ -116,7 +116,7 @@ export class ZardDialogOptions<T, U> {
               <ng-icon [svg]="config.zOkIcon" class="size-4!" />
             }
 
-            {{ config.zOkText ?? 'OK' }}
+            {{ config.zOkText ?? 'Confirmer' }}
           </button>
         }
       </footer>

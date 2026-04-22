@@ -1,8 +1,8 @@
-import { ZardButtonComponent } from "@/shared/components/button";
 import { ZardFormControlComponent, ZardFormFieldComponent, ZardFormLabelComponent } from "@/shared/components/form";
 import { ZardInputDirective } from "@/shared/components/input";
-import { Component, inject } from "@angular/core";
+import { Component, inject, output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
+import { updateSecretsForm } from "../modules/broker.modules";
 
 @Component({
     selector: 'secrets-dialog',
@@ -12,16 +12,25 @@ import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
         ZardFormFieldComponent,
         ZardFormControlComponent,
         ZardFormLabelComponent,
-        ZardInputDirective,
-        ZardButtonComponent
+        ZardInputDirective
     ],
     templateUrl: './secrets-dialog.components.html'
 })
 export class SecretsDialog {
     readonly fb = inject(FormBuilder);
 
-    readonly form = this.fb.group({
-        'APCA-API-KEY-ID': [''],
-        'APCA-API-SECRET-KEY': ['']
-    });
+    submitted = output<{keyId: string, secretId: string}>();
+
+    form = updateSecretsForm();
+
+    submit() {
+        this.form.markAllAsTouched();
+
+        const value = this.form.getRawValue();
+
+        this.submitted.emit({
+            keyId: value.keyId.trim(),
+            secretId: value.secretId.trim()
+        })
+    }
 }
