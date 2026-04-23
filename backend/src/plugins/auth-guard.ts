@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "@/auth.js";
+import { prisma } from "@/db/prisma.js";
 
 async function authGuardPlugin(app: FastifyInstance) {
   app.decorate("requireAuth", async (req: FastifyRequest, reply: FastifyReply) => {
@@ -13,8 +14,23 @@ async function authGuardPlugin(app: FastifyInstance) {
       return reply.status(401).send({ message: "Unauthorized" });
     }
 
+    const user = await prisma.user.findUnique({
+      where: { id: session.session.userId },
+      select: {
+        id: true,
+        keyId: true,
+        secretId: true
+      }
+    });
+
+    if (!user) {
+      return reply.status(401).send({ message: "Unauthorized" });
+    }
+
     req.user = {
-      id: session.session.userId
+      id: session.session.userId,
+      keyId: user.keyId ?? '',
+      secretId: user.secretId ?? ''
     };
   });
 }
@@ -29,6 +45,8 @@ declare module "fastify" {
   interface FastifyRequest {
     user: {
       id: string;
+      keyId: string;
+      secretId: string
     };
   }
 }

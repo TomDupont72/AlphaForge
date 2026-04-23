@@ -1,23 +1,25 @@
 import { updateUserSecrets } from "@/db/alpaca.db.js";
 import { AlpacaUpdateSecretsData, AlpacaUpdateSecretsSchema } from "@/modules/alpaca.schemas.js";
-import { encrypt } from "@/utils/encryption.js";
-import type { FastifyInstance } from "fastify";
+import { decrypt, encrypt } from "@/utils/encryption.js";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 export async function alpacaRoutes(fastify: FastifyInstance) {
-    fastify.get("/account", async() => {
-        const res = await fetch("https://paper-api.alpaca.markets/v2/account", {
-            method: "GET",
-            headers: {
-                accept: "application/json",
-                "APCA-API-KEY-ID": process.env.ALPACA_CLIENT_ID,
-                "APCA-API-SECRET-KEY": process.env.ALPACA_CLIENT_SECRET
-            }
-        });
+    fastify.get("/account",
+        { preHandler: [fastify.requireAuth] },
+        async(request: FastifyRequest) => {
+            const res = await fetch("https://paper-api.alpaca.markets/v2/account", {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                    "APCA-API-KEY-ID": decrypt(request.user.keyId),
+                    "APCA-API-SECRET-KEY": decrypt(request.user.secretId)
+                }
+            });
 
-        return res.json();
+            return res.json();
     })
     
-    fastify.patch("/update-secrets", { preHandler: [fastify.requireAuth] }, async (request, reply) => {
+    fastify.patch("/update-secrets", { preHandler: [fastify.requireAuth] }, async (request: FastifyRequest, reply: FastifyReply) => {
         const body = request.body as AlpacaUpdateSecretsData 
         const userId = request.user.id
 
