@@ -16,7 +16,7 @@ app.register(fastifyCors, {
   allowedHeaders: ["Content-Type", "Authorization"],
 })
 
-app.get("/health", async () => {
+app.get("/api/health", async () => {
   return { status: "ok" }
 })
 
