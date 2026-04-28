@@ -1,42 +1,39 @@
-import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 
-const key = process.env.ENCRYPTION_KEY
+const key = process.env.ENCRYPTION_KEY;
 
 if (!key) {
-  throw new Error('ENCRYPTION_KEY is not defined')
+  throw new Error("ENCRYPTION_KEY is not defined");
 }
 
-const ENCRYPTION_ALGORITHM = 'aes-256-ctr';
-const ENCRYPTION_KEY = Buffer.from(key, 'hex')
+const ENCRYPTION_ALGORITHM = "aes-256-ctr";
+const ENCRYPTION_KEY = Buffer.from(key, "hex");
 
 export function encrypt(text: string) {
-    const iv = randomBytes(16);
+  const iv = randomBytes(16);
 
-    const cipher = createCipheriv(ENCRYPTION_ALGORITHM, ENCRYPTION_KEY, iv);
+  const cipher = createCipheriv(ENCRYPTION_ALGORITHM, ENCRYPTION_KEY, iv);
 
-    const encryptedText = Buffer.concat([
-        cipher.update(text),
-        cipher.final(),
-    ]);
+  const encryptedText = Buffer.concat([cipher.update(text), cipher.final()]);
 
-    return JSON.stringify({
-        iv: iv.toString('hex'),
-        content: encryptedText.toString('hex'),
-    });
+  return JSON.stringify({
+    iv: iv.toString("hex"),
+    content: encryptedText.toString("hex"),
+  });
 }
 
 export function decrypt(payload: string) {
-    const parsed = JSON.parse(payload);
+  const parsed = JSON.parse(payload);
 
-    const iv = Buffer.from(parsed.iv, 'hex');
-    const encryptedText = Buffer.from(parsed.content, 'hex');
+  const iv = Buffer.from(parsed.iv, "hex");
+  const encryptedText = Buffer.from(parsed.content, "hex");
 
-    const decipher = createDecipheriv(ENCRYPTION_ALGORITHM, ENCRYPTION_KEY, iv);
-    
-    const decryptedText = Buffer.concat([
-        decipher.update(encryptedText),
-        decipher.final(),
-    ]);
+  const decipher = createDecipheriv(ENCRYPTION_ALGORITHM, ENCRYPTION_KEY, iv);
 
-    return decryptedText.toString('utf8');
+  const decryptedText = Buffer.concat([
+    decipher.update(encryptedText),
+    decipher.final(),
+  ]);
+
+  return decryptedText.toString("utf8");
 }

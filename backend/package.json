@@ -11,6 +11,7 @@
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "better-auth": "^1.6.4",
+    "bullmq": "^5.76.3",
     "fastify": "^5.8.5",
     "pg": "^8.20.0",
     "prisma": "^7.7.0"

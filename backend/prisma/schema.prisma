@@ -13,17 +13,18 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   keyId         String?
   secretId      String?
   sessions      Session[]
   accounts      Account[]
+  snapshot      Snapshot[]
 
   @@unique([email])
   @@map("user")
@@ -75,4 +76,14 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Snapshot {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  portfolioValue Decimal
+  createdAt      DateTime
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, createdAt])
 }
