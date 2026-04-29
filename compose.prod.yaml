@@ -1,13 +1,7 @@
 services:
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-
   backend:
-    depends_on:
-      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     image: ghcr.io/tomdupont72/alphaforge-backend:latest
     env_file:
       - /etc/alphaforge-api.env
