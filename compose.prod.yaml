@@ -1,12 +1,12 @@
 services:
   backend:
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     image: ghcr.io/tomdupont72/alphaforge-backend:latest
     env_file:
       - /etc/alphaforge-api.env
     ports:
       - "8001:8000"
+    networks:
+      - shared-network
     restart: unless-stopped
 
   frontend:
@@ -14,3 +14,7 @@ services:
     ports:
       - "4200:80"
     restart: unless-stopped
+
+networks:
+  shared-network:
+    external: true
